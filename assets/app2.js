@@ -2,47 +2,40 @@
 const inputElement = document.getElementById('input-search');
 let recentSearches = [];
 // let cityName = currentCityName
-let longitute = currentlongitude
-let latitude = currentlatitude
+// let longitute = currentlongitude
+// let latitude = currentlatitude
 
 
 let city =  inputElement.value;
-const apiKey = '37d5a1d043d687cb9e9c0189aad1636a'
+const APIKey = '37d5a1d043d687cb9e9c0189aad1636a'
+let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+
+
 
 function citySearch(event) {
     event.preventDefault()
     // Retrieves the data for the city
-    function getOneCallApi(lon, lat) {
-        return fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={part}&appid=${apiKey}`)
-            .then(function (response) {
-                return response.json();
-            });
-    } 
+        fetch(queryURL)
+        .then(function (response) {
+            return response.json();
+            console.log(queryURL);
+        });
 
-    // Find the coordinates of the city I've searched
-    function getWeatherData(city) {
-        return fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (currentWeather) {
-                console.log(getWeatherData); 
-                return getOneCallApi(currentWeather.coord.lon, currentWeather.coord.lat);
-            });
     } 
-    let currentCityName = 
-    let weekTemp = 
-    let wind = 
-    let humidity = 
-    let uvIndex = 
-    let currentlatitude = currentWeather.coord.lon
-    let currentlongitude = currentWeather.coord.lat
+    // let currentCityName = 
+    // let weekTemp = 
+    // let wind = 
+    // let humidity = 
+    // let uvIndex = 
+    // let currentlatitude = currentWeather.coord.lon
+    // let currentlongitude = currentWeather.coord.lat
     // pushing the city searched into an array
-    recentSearches.push({ cityName: "John", longitude: 30 , latitude: 30 });   
-    displayCurrentDayWeather();
-    displayForecast();
-    createCityList();
-}
+
+    // recentSearches.push({ cityName: "John", longitude: 30 , latitude: 30 });   
+    // displayCurrentDayWeather();
+    // displayForecast();
+    // createCityList();
+
 
     function displayForecast(){
         console.log("active");
