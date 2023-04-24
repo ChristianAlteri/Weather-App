@@ -1,0 +1,18 @@
+
+.contain {
+    width: fit-content
+}
+
+.green {
+    background-color: green;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.red {
+    background-color: red;
+    color: white;
+}
+
