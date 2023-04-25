@@ -2,9 +2,13 @@
 
 // let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
 let recentSearches = [];
-let today = dayjs().format("dddd");
-// const tomorrow = dayjs().add(1, 'day');
+const days = [];
+for (let i = 0; i < 5; i++) {
+  const day = dayjs().add(i, 'day').format('dddd');
+  days.push(day);
+}
 
+console.log(days);
 
 let exampleUrl = "http://api.openweathermap.org/data/2.5/weather?q=denver&appid=37d5a1d043d687cb9e9c0189aad1636a"
 const APIKey = '37d5a1d043d687cb9e9c0189aad1636a'
@@ -69,13 +73,13 @@ function citySearch(event) {
     }                
 
     function displayCurrentDayWeather(temp, wind, humidity){
-        for (let index = 0; index < 7; index++) {
-            
+        for (let i = 0; i < 5; i++) {
+            let fiveDay = days[i]
         const currentWeatherCard = $(                
         // template literal for weather card 
         `<div class="row mx-auto justify-content-center card">
         <div class="card-body mx-auto">
-        <h6 class="forecast-day-date">${tomorrow}</h6>
+        <h6 class="forecast-day-date">${fiveDay}</h6>
         <div class="card-text mx-auto">
             <p>Temp: <span id="forecast-day-temp"></span>${temp} </p>
             <p>Wind: <span id="forecast-day-wind"></span>${wind} </p>
@@ -103,7 +107,7 @@ function citySearch(event) {
             <thead>
                 <tr>
                     <td>
-                        <button id="city-button" type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
+                        <button id="city-button" type="submit" class="m-1 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
                     </td>
                 </tr>
             </thead>
@@ -111,10 +115,7 @@ function citySearch(event) {
             $("#city-list").append(table);
         }else{
 
-        // console.log(recentSearches);
-        // console.log(recentName);
-
-}
+        }
         };
 
 
