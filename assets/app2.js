@@ -1,59 +1,66 @@
 
-const inputElement = document.getElementById('input-search');
+
 let recentSearches = [];
-// let cityName = currentCityName
-// let longitute = currentlongitude
-// let latitude = currentlatitude
 
-
-let city =  inputElement.value;
+let exampleUrl = "http://api.openweathermap.org/data/2.5/weather?q=denver&appid=37d5a1d043d687cb9e9c0189aad1636a"
 const APIKey = '37d5a1d043d687cb9e9c0189aad1636a'
-let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
-
+// let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+url = "http://api.openweathermap.org/data/2.5/weather?q=denver&appid37d5a1d043d687cb9e9c0189aad1636a"
 
 
 function citySearch(event) {
     event.preventDefault()
+    let inputElement = document.getElementById('input-search');
+    let city =  inputElement.value;
+    let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    console.log(city);
     // Retrieves the data for the city
         fetch(queryURL)
         .then(function (response) {
             return response.json();
-            console.log(queryURL);
-        });
+            
+        }).then(function (result){
+            console.log(result);
+            cityName = result.name
+            longitude = result.coord.lon
+            latitude = result.coord.lat
+            temp = result.main.temp
+            wind = result.wind.speed
+            humidity = result.main.humidity
+            $("#weather-card-container").empty();
+            $("#display-card").empty();
+            displayCurrentDayWeather();
+            displayForecast();
+            createCityList();
+            recentSearches.push({ Name: cityName, longitude: longitude , latitude: latitude});
+            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
+               
+        })
+    
     } 
-    // let currentCityName = 
-    // let weekTemp = 
-    // let wind = 
-    // let humidity = 
-    // let uvIndex = 
-    // let currentlatitude = currentWeather.coord.lon
-    // let currentlongitude = currentWeather.coord.lat
+   
     // pushing the city searched into an array
 
-    // recentSearches.push({ cityName: "John", longitude: 30 , latitude: 30 });   
-    // displayCurrentDayWeather();
-    // displayForecast();
-    // createCityList();
+    // 
+    
 
 
     function displayForecast(){
-        console.log("active");
+        
         const card = $(
         // template literal for current day weather displayed 
         `<div class="row">
                         <div class="col-12">
                             <div class="card mr-3">
                                 <div class="card-body">
-                                    <h4 id="current-day-city" class="card-title">Search for a city!</h4>
+                                    <h4 id="current-day-city" class="card-title">Search for a city! <br></br> ${cityName} </h4>
                                     <img id="weather-icon" alt="">
 
                                     <div class="card-text">
-                                        <p>Temperature:  <span id="current-day-temp"></span> </p>
-                                        <p>Wind: <span id="current-day-wind"></span> </p>
-                                        <p>Humidity: <span id="current-day-humidity"></span> </p>
-                                        <div class=" d-block" id="uv-color">
-                                            <p>UV index: <span id="current-day-UV"></span> </p></div> 
+                                        <p>Temperature:  <span id="current-day-temp"></span>${temp} </p>
+                                        <p>Wind: <span id="current-day-wind"></span>${wind} </p>
+                                        <p>Humidity: <span id="current-day-humidity"></span>${humidity} </p>
                                     </div>
                                 </div>
                             </div>
@@ -62,16 +69,16 @@ function citySearch(event) {
     }                
 
     function displayCurrentDayWeather(){
-        console.log("active");
+        
         const currentWeatherCard = $(                
         // template literal for weather card 
-        `<div class="col-2 card">
+        `<div class="row mx-auto  card">
         <div class="card-body">
-        <h6 class="forecast-day-date">2022-06-01 icon</h6>
+        <h6 class="forecast-day-date">2001</h6>
         <div class="card-text">
-            <p>Temp: <span id="forecast-day-temp"></span> </p>
-            <p>Wind: <span id="forecast-day-wind"></span> </p>
-            <p>Humidity: <span id="forecast-day-humidity"></span> </p>
+            <p>Temp: <span id="forecast-day-temp"></span>${temp} </p>
+            <p>Wind: <span id="forecast-day-wind"></span>${wind} </p>
+            <p>Humidity: <span id="forecast-day-humidity"></span>${humidity} </p>
         </div>
         </div>`);
         $("#weather-card-container").append(currentWeatherCard);
@@ -80,28 +87,28 @@ function citySearch(event) {
 
 
         function createCityList(){ 
-        console.log("active");
+        const recentSearchesStr = localStorage.getItem('recentSearches');
+        const recentSearches = JSON.parse(recentSearchesStr);
+        recentName = recentSearches.Name;
+        console.log(recentSearches);
+        console.log(recentName);
+        // const recentSearchesNames = recentSearches.map(search => search.Name);
+
+
+
         const table = $(
-            `<table class="col table table-sm table-dark mx-auto">
-                            <thead>
-                            <tr>
-                                <button type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto" onclick="citySearch(${cityName})">${cityName}</button>
-                            </tr>
-                            </thead>
-                        </table>`);
-                        $("#city-list").append(table);
+            `<table class="col table table-sm table-light mx-auto">
+            <thead>
+                <tr>
+                    <td>
+                        <button type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto" onclick="citySearch()"></button>
+                    </td>
+                </tr>
+            </thead>
+            </table>`);
+            $("#city-list").append(table);
         };
 
 
 
-// displayCityList(){
-
-//     createCityList()
-
-// };
-
-
-
-// getPastSearches()
-
-// storePastSearches()
+``
