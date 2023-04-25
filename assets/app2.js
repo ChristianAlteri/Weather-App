@@ -1,5 +1,6 @@
 
 
+// let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
 let recentSearches = [];
 
 let exampleUrl = "http://api.openweathermap.org/data/2.5/weather?q=denver&appid=37d5a1d043d687cb9e9c0189aad1636a"
@@ -13,14 +14,12 @@ function citySearch(event) {
     let inputElement = document.getElementById('input-search');
     let city =  inputElement.value;
     let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
-    console.log(city);
     // Retrieves the data for the city
         fetch(queryURL)
         .then(function (response) {
             return response.json();
             
         }).then(function (result){
-            console.log(result);
             cityName = result.name
             longitude = result.coord.lon
             latitude = result.coord.lat
@@ -32,7 +31,7 @@ function citySearch(event) {
             displayCurrentDayWeather();
             displayForecast();
             createCityList();
-            recentSearches.push({ Name: cityName, longitude: longitude , latitude: latitude});
+            recentSearches.push({ Name: cityName, longitude: longitude , latitude: latitude, temp: temp, wind: wind, humidity: humidity});
             localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
                
@@ -86,28 +85,26 @@ function citySearch(event) {
 
 
 
-        function createCityList(){ 
+        function createCityList(){   
         const recentSearchesStr = localStorage.getItem('recentSearches');
-        const recentSearches = JSON.parse(recentSearchesStr);
+        const recentSearches = JSON.parse(recentSearchesStr)[0];
         recentName = recentSearches.Name;
-        console.log(recentSearches);
-        console.log(recentName);
-        // const recentSearchesNames = recentSearches.map(search => search.Name);
-
-
+        // console.log(recentSearches);
+        // console.log(recentName);
 
         const table = $(
             `<table class="col table table-sm table-light mx-auto">
             <thead>
                 <tr>
                     <td>
-                        <button type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto" onclick="citySearch()"></button>
+                        <button type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto" onclick="citySearch()">${recentName}</button>
                     </td>
                 </tr>
             </thead>
             </table>`);
             $("#city-list").append(table);
         };
+
 
 
 
