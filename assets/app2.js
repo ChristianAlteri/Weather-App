@@ -2,6 +2,9 @@
 
 // let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
 let recentSearches = [];
+let today = dayjs().format("dddd");
+// const tomorrow = dayjs().add(1, 'day');
+
 
 let exampleUrl = "http://api.openweathermap.org/data/2.5/weather?q=denver&appid=37d5a1d043d687cb9e9c0189aad1636a"
 const APIKey = '37d5a1d043d687cb9e9c0189aad1636a'
@@ -20,32 +23,30 @@ function citySearch(event) {
             return response.json();
             
         }).then(function (result){
-            cityName = result.name
-            longitude = result.coord.lon
-            latitude = result.coord.lat
-            temp = result.main.temp
-            wind = result.wind.speed
-            humidity = result.main.humidity
+            console.log(result);
+            let cityName = result.name
+            let longitude = result.coord.lon
+            let latitude = result.coord.lat
+            let temp = result.main.temp
+            let wind = result.wind.speed
+            let humidity = result.main.humidity
+            recentSearches.push({Name: cityName});
+            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
             $("#weather-card-container").empty();
             $("#display-card").empty();
-            displayCurrentDayWeather();
-            displayForecast();
-            createCityList();
-            recentSearches.push({ Name: cityName, longitude: longitude , latitude: latitude, temp: temp, wind: wind, humidity: humidity});
-            localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+            displayCurrentDayWeather(temp, wind, humidity);
+            displayForecast(cityName, temp, wind, humidity);
+            createCityList(cityName);
+            // recentSearches.push({ Name: cityName, longitude: longitude , latitude: latitude, temp: temp, wind: wind, humidity: humidity});
+            
 
                
         })
     
     } 
-   
-    // pushing the city searched into an array
-
-    // 
-    
 
 
-    function displayForecast(){
+    function displayForecast(cityName, temp, wind, humidity){
         
         const card = $(
         // template literal for current day weather displayed 
@@ -67,14 +68,15 @@ function citySearch(event) {
                         $("#display-card").append(card);
     }                
 
-    function displayCurrentDayWeather(){
-        
+    function displayCurrentDayWeather(temp, wind, humidity){
+        for (let index = 0; index < 7; index++) {
+            
         const currentWeatherCard = $(                
         // template literal for weather card 
-        `<div class="row mx-auto  card">
-        <div class="card-body">
-        <h6 class="forecast-day-date">2001</h6>
-        <div class="card-text">
+        `<div class="row mx-auto justify-content-center card">
+        <div class="card-body mx-auto">
+        <h6 class="forecast-day-date">${tomorrow}</h6>
+        <div class="card-text mx-auto">
             <p>Temp: <span id="forecast-day-temp"></span>${temp} </p>
             <p>Wind: <span id="forecast-day-wind"></span>${wind} </p>
             <p>Humidity: <span id="forecast-day-humidity"></span>${humidity} </p>
@@ -82,27 +84,37 @@ function citySearch(event) {
         </div>`);
         $("#weather-card-container").append(currentWeatherCard);
         };
+    }
+
+        function cityButtonClick(){
+            let cityButton = document.getElementById('city-button');
+            cityButton.addEventListener("click", createCityList())
+            console.log("cityButton");
+        };
 
 
 
         function createCityList(){   
-        const recentSearchesStr = localStorage.getItem('recentSearches');
-        const recentSearches = JSON.parse(recentSearchesStr)[0];
-        recentName = recentSearches.Name;
-        // console.log(recentSearches);
-        // console.log(recentName);
-
+        const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+        if(recentSearches){
+        let recentName = recentSearches[0].Name;
         const table = $(
             `<table class="col table table-sm table-light mx-auto">
             <thead>
                 <tr>
                     <td>
-                        <button type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto" onclick="citySearch()">${recentName}</button>
+                        <button id="city-button" type="submit" class="m-3 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
                     </td>
                 </tr>
             </thead>
             </table>`);
             $("#city-list").append(table);
+        }else{
+
+        // console.log(recentSearches);
+        // console.log(recentName);
+
+}
         };
 
 
