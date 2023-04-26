@@ -36,7 +36,7 @@ function citySearch(event) {
     //         
     //     }   fetch(newURL)
     //         .then(function) (result){
-    //         // recentSearches.push({ Name: cityName, longitude: longitude , latitude: latitude, temp: temp, wind: wind, humidity: humidity});
+    //         // 
             
     //         let cityName = result.name
     //         let temp = result.main.temp
@@ -45,8 +45,7 @@ function citySearch(event) {
     //         const iconID = weatherData.current.weather[0]['icon'];
     //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
     //         console.log(iconURL)
-    //         recentSearches.push({Name: cityName});
-    //         localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+
     //         $("#weather-card-container").empty();
     //         $("#display-card").empty();
     //         displayCurrentDayWeather(temp, wind, humidity);
@@ -60,7 +59,7 @@ function citySearch(event) {
     } 
 
 
-    function displayForecast(cityName, icon, temp, wind, humidity){
+    function displayForecast(cityName, temp, wind, humidity){
         
         const card = $(
         // template literal for current day weather displayed 
@@ -69,12 +68,12 @@ function citySearch(event) {
                             <div class="card mr-3">
                                 <div class="card-body">
                                     <h4 id="current-day-city" class="card-title">Search for a city! <br></br> ${cityName} </h4>
-                                    <img id="weather-icon" alt="${icon}">
+                                    
 
                                     <div class="card-text">
-                                        <p> <i class="fa-solid fa-cloud"></i> Temperature:  <span id="current-day-temp"></span>${temp} </p>
-                                        <p>Wind: <span id="current-day-wind"></span>${wind} </p>
-                                        <p>Humidity: <span id="current-day-humidity"></span>${humidity} </p>
+                                        <p> Temperature:  <span id="current-day-temp"></span>${temp}&#xb0; </p>
+                                        <p>Wind: <span id="current-day-wind"></span>${wind}km/h </p>
+                                        <p>Humidity: <span id="current-day-humidity"></span>${humidity}% </p>
                                     </div>
                                 </div>
                             </div>
@@ -90,9 +89,9 @@ function citySearch(event) {
         <div class="card-body mx-auto">
         <h6 class="forecast-day-date">${fiveDay}</h6>
         <div class="card-text mx-auto">
-            <p>Temp: <span id="forecast-day-temp"></span>${temp} </p>
-            <p>Wind: <span id="forecast-day-wind"></span>${wind} </p>
-            <p>Humidity: <span id="forecast-day-humidity"></span>${humidity} </p>
+            <p>Temp: <span id="forecast-day-temp"></span>${temp}&#xb0; </p>
+            <p>Wind: <span id="forecast-day-wind"></span>${wind}km/h </p>
+            <p>Humidity: <span id="forecast-day-humidity"></span>${humidity}% </p>
         </div>
         </div>`);
         $("#weather-card-container").append(currentWeatherCard);
@@ -143,20 +142,37 @@ function citySearch(event) {
               });
           }
           
-          function weatherData(newURL) {
-            fetch(newURL)
-              .then(function (response) {
-                return response.json();
-              })
-              .then (function(result){
-                console.log(result);
-
-                // let cityName = result.name
-                // let temp = result.main.temp
-                // let wind = result.wind.speed
-                // let humidity = result.main.humidity
-                    }) 
-              };
+          
+              function weatherData(newURL) {
+                fetch(newURL)
+                  .then(function (response) {
+                    return response.json();
+                  })
+                  .then(function (result) {
+                    const weatherArray = result.list;
+                    for (let i = 0; i < weatherArray.length; i++) {
+                      // WITHIN EACH OBJECT WE SEE A PROPERTY CALLED dt_txt
+                      if (weatherArray[i].dt_txt.slice(11, 13) == "12") {
+                        console.log(weatherArray[i]);
+                        let cityName = inputElement.value
+                        let tempKel = weatherArray[i].main.temp
+                        let temp = (tempKel - 273.15).toFixed(1)
+                        let wind = weatherArray[i].wind.speed.toFixed(1)
+                        let humidity = weatherArray[i].main.humidity
+                        recentSearches.push({ Name: cityName, temp: temp, wind: wind, humidity: humidity});
+                        localStorage.setItem('recentSearches', JSON.stringify(recentSearches)); 
+                        console.log(recentSearches);
+                        $("#weather-card-container").empty();
+                        $("#display-card").empty();
+                        displayCurrentDayWeather(temp, wind, humidity);
+                        displayForecast(cityName, temp, wind, humidity);
+                        createCityList(cityName);
+                      }
+                      
+                    }
+                    
+                  });
+              }
 
           
           
