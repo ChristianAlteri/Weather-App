@@ -2,6 +2,7 @@
 
 // let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
 let recentSearches = [];
+
 const days = [];
 for (let i = 0; i < 5; i++) {
   const day = dayjs().add(i, 'day').format('dddd');
