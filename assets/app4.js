@@ -123,6 +123,7 @@ function citySearch(event) {
             })
             .then(function (result) {
             const weatherArray = result.list;
+            let currentDay = 0;
             for (let i = 0; i < weatherArray.length; i++) {
                 // WITHIN EACH OBJECT WE SEE A PROPERTY CALLED dt_txt
                 if (weatherArray[i].dt_txt.slice(11, 13) == "12") {
@@ -133,7 +134,7 @@ function citySearch(event) {
                     temp: (weatherArray[i].main.temp - 273.15).toFixed(1),
                     wind: weatherArray[i].wind.speed.toFixed(1),
                     humidity: weatherArray[i].main.humidity,
-                    fiveDay:  days[i],
+                    fiveDay:  days[currentDay++],
                         
                         
                     // const iconID = weatherData.current.weather[0]['icon'];
