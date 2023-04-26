@@ -9,6 +9,8 @@ for (let i = 1; i < 6; i++) {
   days.push(day);
 }
 
+      
+
 
 
 
@@ -51,13 +53,12 @@ function citySearch(event) {
                         $("#display-card").append(card);
     }                
     function displayCurrentDayWeather(newCity){
-        for (let i = 0; i < 5; i++) {
-            let fiveDay = days[i]
+        
         const currentWeatherCard = $(                
         // template literal for weather card 
         `<div class="row mx-auto justify-content-center card">
         <div class="card-body mx-auto">
-        <h6 class="forecast-day-date">${fiveDay}</h6>
+        <h6 class="forecast-day-date">${newCity.fiveDay}</h6>
         <div class="card-text mx-auto">
             <p>Temp: <span id="forecast-day-temp"></span>${newCity.temp}&#xb0; </p>
             <p>Wind: <span id="forecast-day-wind"></span>${newCity.wind}km/h </p>
@@ -65,7 +66,7 @@ function citySearch(event) {
         </div>
         </div>`);
         $("#weather-card-container").append(currentWeatherCard);
-        };
+        
     }
     function createCityList(){ 
     // let newCity =  inputElement.value; 
@@ -73,7 +74,7 @@ function citySearch(event) {
     // // recentSearches.push(newCity)
     if(recentSearches){
         let recentName = recentSearches;
-        console.log(recentName);
+        // console.log(recentName);
     const table = $(
         `<table class="col table table-sm table-light mx-auto">
         <thead>
@@ -132,19 +133,23 @@ function citySearch(event) {
                     temp: (weatherArray[i].main.temp - 273.15).toFixed(1),
                     wind: weatherArray[i].wind.speed.toFixed(1),
                     humidity: weatherArray[i].main.humidity,
+                    fiveDay:  days[i],
+                        
+                        
                     // const iconID = weatherData.current.weather[0]['icon'];
             //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
                     };
-                    
+                    console.log(days);
+                    console.log(newCity);
 
                     
                 localStorage.setItem('newCity', JSON.stringify(newCity));
                 recentSearchesData.push(newCity);
                 // recentSearches.push({ Name: cityName, temp: temp, wind: wind, humidity: humidity});
-                console.log(recentSearchesData); 
+                // console.log(recentSearchesData); 
                 // $("#weather-card-container").empty();
-                $("#display-card").empty();
                 displayCurrentDayWeather(newCity);
+                $("#display-card").empty();
                 displayForecast(newCity);
                 
                 }
