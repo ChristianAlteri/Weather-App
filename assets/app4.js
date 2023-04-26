@@ -22,8 +22,8 @@ let inputElement = document.getElementById('input-search');
 function citySearch(event) {
     event.preventDefault()
     cityCord();
-    setNewCity(newCity);
-    createCityList(newCity);
+    // setNewCity(newCity);
+    createCityList();
     
     
     } 
@@ -67,26 +67,27 @@ function citySearch(event) {
         $("#weather-card-container").append(currentWeatherCard);
         };
     }
-    function createCityList(newCity){ 
+    function createCityList(){ 
     // let newCity =  inputElement.value; 
-    // const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
     // // recentSearches.push(newCity)
-    // if(recentSearches){
-    // let recentName = recentSearches[0].Name;
+    if(recentSearches){
+        let recentName = recentSearches;
+        console.log(recentName);
     const table = $(
         `<table class="col table table-sm table-light mx-auto">
         <thead>
             <tr>
                 <td>
-                    <button id="city-button" type="submit" class="m-1 d-flex btn btn-secondary d-block mx-auto">${newCity.CityName[0]}</button>
+                    <button id="city-button" type="submit" class="m-1 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
                 </td>
             </tr>
         </thead>
         </table>`);
         $("#city-list").append(table);
-    // }else{
+    }else{
 
-    // }
+    }
     };
 
         // function cityButtonClick(){
@@ -112,52 +113,50 @@ function citySearch(event) {
                 // return weatherData(newURL); 
 
               });
-          }
+        }
           
-          
-              function weatherData(newURL) {
-                fetch(newURL)
-                  .then(function (response) {
-                    return response.json();
-                  })
-                  .then(function (result) {
-                    const weatherArray = result.list;
-                    for (let i = 0; i < weatherArray.length; i++) {
-                      // WITHIN EACH OBJECT WE SEE A PROPERTY CALLED dt_txt
-                      if (weatherArray[i].dt_txt.slice(11, 13) == "12") {
+        function weatherData(newURL) {
+        fetch(newURL)
+            .then(function (response) {
+            return response.json();
+            })
+            .then(function (result) {
+            const weatherArray = result.list;
+            for (let i = 0; i < weatherArray.length; i++) {
+                // WITHIN EACH OBJECT WE SEE A PROPERTY CALLED dt_txt
+                if (weatherArray[i].dt_txt.slice(11, 13) == "12") {
 
-                        
-                        let newCity = {
-                            CityName: inputElement.value,
-                            temp: (weatherArray[i].main.temp - 273.15).toFixed(1),
-                            wind: weatherArray[i].wind.speed.toFixed(1),
-                            humidity: weatherArray[i].main.humidity,
-                            // const iconID = weatherData.current.weather[0]['icon'];
-                    //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
-                          };
-                          
 
-                          
-                        localStorage.setItem('newCity', JSON.stringify(newCity));
-                        recentSearchesData.push(newCity);
-                        // recentSearches.push({ Name: cityName, temp: temp, wind: wind, humidity: humidity});
-                        console.log(recentSearchesData); 
-                        $("#weather-card-container").empty();
-                        $("#display-card").empty();
-                        displayCurrentDayWeather(newCity);
-                        displayForecast(newCity);
-                        
-                      }
-                      
-                    }
-                   
-                  });
-              
+                let newCity = {
+                    CityName: inputElement.value.toUpperCase(),
+                    temp: (weatherArray[i].main.temp - 273.15).toFixed(1),
+                    wind: weatherArray[i].wind.speed.toFixed(1),
+                    humidity: weatherArray[i].main.humidity,
+                    // const iconID = weatherData.current.weather[0]['icon'];
+            //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
+                    };
+                    
+
+                    
+                localStorage.setItem('newCity', JSON.stringify(newCity));
+                recentSearchesData.push(newCity);
+                // recentSearches.push({ Name: cityName, temp: temp, wind: wind, humidity: humidity});
+                console.log(recentSearchesData); 
+                // $("#weather-card-container").empty();
+                $("#display-card").empty();
+                displayCurrentDayWeather(newCity);
+                displayForecast(newCity);
+                
                 }
-          
-function setNewCity(newCity) {
-        localStorage.setItem('recentSearches', JSON.stringify(newCity.CityName));
-        recentSearches.push(newCity.CityName);
-        console.log(recentSearches); 
+                
+            }
+            
+            });
         
-}
+        }
+    
+        // function setNewCity(newCity) {
+        //     localStorage.setItem('recentSearches', JSON.stringify(newCity.CityName));
+        //     recentSearches.push(newCity.CityName);
+        //     console.log(recentSearches);         
+        // }
