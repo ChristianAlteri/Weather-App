@@ -16,15 +16,14 @@ const APIKey = '37d5a1d043d687cb9e9c0189aad1636a'
 // "https://api.openweathermap.org/data/2.5/onecall?appid=37d5a1d043d687cb9e9c0189aad1636a&q=" + city + "&units=imperial&exclude=minutely,hourly"
 
     let inputElement = document.getElementById('input-search');
-    let city =  inputElement.value;
-    let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+    
     
     
 
 function citySearch(event) {
     event.preventDefault()
     cityCord();
-    weatherData();
+    // weatherData(new);
     
 
     // // Retrieves the data for the city
@@ -82,7 +81,6 @@ function citySearch(event) {
                         </div>`);
                         $("#display-card").append(card);
     }                
-
     function displayCurrentDayWeather(temp, wind, humidity){
         for (let i = 0; i < 5; i++) {
             let fiveDay = days[i]
@@ -100,59 +98,65 @@ function citySearch(event) {
         $("#weather-card-container").append(currentWeatherCard);
         };
     }
+    function createCityList(){   
+    const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    if(recentSearches){
+    let recentName = recentSearches[0].Name;
+    const table = $(
+        `<table class="col table table-sm table-light mx-auto">
+        <thead>
+            <tr>
+                <td>
+                    <button id="city-button" type="submit" class="m-1 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
+                </td>
+            </tr>
+        </thead>
+        </table>`);
+        $("#city-list").append(table);
+    }else{
 
-        function cityButtonClick(){
-            let cityButton = document.getElementById('city-button');
-            cityButton.addEventListener("click", createCityList())
-            console.log("cityButton");
-        };
+    }
+    };
 
+        // function cityButtonClick(){
+        //     let cityButton = document.getElementById('city-button');
+        //     cityButton.addEventListener("click", createCityList())
+        //     console.log("cityButton");
+        // };
 
-
-        function createCityList(){   
-        const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-        if(recentSearches){
-        let recentName = recentSearches[0].Name;
-        const table = $(
-            `<table class="col table table-sm table-light mx-auto">
-            <thead>
-                <tr>
-                    <td>
-                        <button id="city-button" type="submit" class="m-1 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
-                    </td>
-                </tr>
-            </thead>
-            </table>`);
-            $("#city-list").append(table);
-        }else{
-
-        }
-        };
-
-
-       
         
         // Find the coordinates of the city I've searched
         function cityCord() {
-            return fetch(queryURL)
+            let city =  inputElement.value;
+            let queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+             fetch(queryURL)
               .then(function (response) {
                 return response.json();
               })
               .then(function (result) {
                 let lon = result.coord.lon;
                 let lat = result.coord.lat;
-                console.log(result);
                 let newURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=37d5a1d043d687cb9e9c0189aad1636a`;
-                return weatherData(newURL); 
+                weatherData(newURL);
+                // return weatherData(newURL); 
+
               });
           }
           
           function weatherData(newURL) {
-            return fetch(newURL)
+            fetch(newURL)
               .then(function (response) {
                 return response.json();
-                console.log(cityCord);
-                console.log(weatherData);
-              });
-          }
+              })
+              .then (function(result){
+                console.log(result);
+
+                // let cityName = result.name
+                // let temp = result.main.temp
+                // let wind = result.wind.speed
+                // let humidity = result.main.humidity
+                    }) 
+              };
+
+          
           
