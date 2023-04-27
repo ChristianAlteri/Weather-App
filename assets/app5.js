@@ -11,15 +11,7 @@ for (let i = 1; i < 6; i++) {
 }
 let inputElement = document.getElementById('input-search');
 
-      
-
-
-
-
-    
-    
-    
-
+    //  --- Main Function --- // 
 function citySearch(event) {
     event.preventDefault()
     cityCord();
@@ -69,7 +61,7 @@ function citySearch(event) {
     function createCityList(){ 
     const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
     if(recentSearches){
-        let recentName = recentSearches;
+        let recentName = recentSearches.CityName;
         console.log(recentSearches);
     const table = $(
         `<table class="col table table-sm table-light mx-auto">
@@ -151,8 +143,3 @@ function citySearch(event) {
         
         }
     
-        // function setNewCity(newCity) {
-        //     localStorage.setItem('recentSearches', JSON.stringify(newCity.CityName));
-        //     recentSearches.push(newCity.CityName);
-        //     console.log(recentSearches);         
-        // }
