@@ -22,45 +22,24 @@
     </nav>
 
     <div>
-    <div class="col d-flex flex-wrap col-2 justify-content-center mx-auto ">
-        <h2>5 Day Forecast</h2>
-        <h6 id="date">Today's Date:
-        <script>
-        var formattedDate = dayjs().format('D-MM-YYYY');
-        document.getElementById('date').textContent = "Today's date " + formattedDate;
-        </script></h6>
-    </div>
-
     <!-- container -->
     <section class="row d-flex mt-2 mx-auto ">
         <section class="col-12 col-sm-3">
-            <form id="search-form" class="ml-2">
+            <!-- <form id="search-form" class="ml-2"> -->
                 <div class="form-group">
-                    <label for="input-search">Search for a city</label>
-                    <input type="text" class="form-control" id="input-search" placeholder="City">
+                    <label for="input-search">Search for a friend</label>
+                    <input type="text" class="form-control" id="input-search" placeholder="friend">
                 </div>
-                <button type="submit" class="btn btn-primary d-block w-100 bg-dark" onclick="citySearch(event)">Search</button>
+                <button class="btn btn-primary d-block w-100 bg-dark" onclick="saveFriend()">Search</button>
                 <h5>Past Searches</h5>
 
                 <!-- Dynamically append html with a list of past searches --> 
-                <div id="city-list"></div>
+                <div id="friend-list"></div>
                 
 
-            </form>
+            <!-- </form> -->
         </section>
-        <!-- Dynamically append html with one day forecast -->
-        <section id="display-card" class="col-12 col-sm-9 mx-auto"></section>
-            
-
-           
-            <!-- Dynamically append html with weather card -->
-            <div class="row ml-1 forecast-row flex-wrap " id="weather-card-container"></div>
-        
-
-
-
-
-        </section>
+     
   
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
@@ -73,7 +52,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>   
     
-    <script src="/assets/app6.js"></script>
+    <script src="./assets/friend.js"></script>
 </body>
 
 </html>

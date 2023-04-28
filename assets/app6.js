@@ -10,13 +10,14 @@ for (let i = 1; i < 6; i++) {
 }
 let inputElement = document.getElementById("input-search");
 
+// load list
+displayCities();
 //  --- Main Function --- //
 function citySearch(event) {
   event.preventDefault();
   saveFriend()
   let city = inputElement.value;
   cityCord(city);
-  createCityList();
 }
 
 function displayForecast(newCity) {
@@ -57,40 +58,36 @@ function displayCurrentDayWeather(newCity) {
   $("#weather-card-container").append(currentWeatherCard);
 }
 
-function createCityList() {
-  const recentSearches =
-    JSON.parse(localStorage.getItem("recentSearches")) || [];
-  if (recentSearches) {
-    let recentName = recentSearches.CityName;
-    console.log(recentSearches);
-    const table = $(
-      `
-                    <button id="city-button" type="submit" class="m-1 d-flex btn btn-secondary d-block mx-auto">${recentName}</button>
-   `
-    );
-    $("#city-list").append(table);
-  } else {
-  }
-}
-
 function saveFriend() {
   let city = $("#input-search").val();
-
   if (!city) {
     alert("Please enter a city");
     return;
   }
-
   let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
-
-  if (savedFriends.includes(friend)) {
+  if (savedCities.includes(city)) {
     alert(`You've already searched  ${city}`);
     return;
   }
   savedCities.push(city);
   localStorage.setItem("cities", JSON.stringify(savedCities));
-  createCityList();
+  displayCities();
 }
+
+function displayCities() {
+  var savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+  $("#city-list").empty();
+
+  for (const city of savedCities) {
+    var btnHTML = $(`
+    <button class="m-3 d-flex btn btn-secondary d-block mx-auto" 
+    onclick="cityCord('${city}')">${city}</button>
+    `);
+
+    $("#city-list").append(btnHTML);
+  }
+}
+
 
 // Find the coordinates of the city I've searched
 function cityCord(city) {
