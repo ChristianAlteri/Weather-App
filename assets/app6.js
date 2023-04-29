@@ -1,8 +1,7 @@
-// --- Global Variables --- //
+// --- Global variables --- //
 const APIKey = "37d5a1d043d687cb9e9c0189aad1636a";
 let recentSearches = [];
 let recentSearchesData = [];
-let searchHistoryArrays = [];
 const days = [];
 for (let i = 1; i < 6; i++) {
   const day = dayjs().add(i, "day").format("dddd");
@@ -10,18 +9,19 @@ for (let i = 1; i < 6; i++) {
 }
 let inputElement = document.getElementById("input-search");
 
-// load list
+// load list to display at HTML load
 displayCities();
+
 //  --- Main Function --- //
 function citySearch(event) {
   event.preventDefault();
-  saveFriend()
+  saveCity();
   let city = inputElement.value;
   cityCord(city);
 }
 
+// Update data into appropriate sections of the HTML
 function displayForecast(newCity) {
-  
   const card = $(
     // template literal for current day weather displayed
     `<div class="row mx-auto">
@@ -44,7 +44,6 @@ function displayForecast(newCity) {
 }
 
 function displayCurrentDayWeather(newCity) {
-  
   const currentWeatherCard = $(
     // template literal for weather card
     `<div class="row mx-auto justify-content-center text-center card">
@@ -60,7 +59,8 @@ function displayCurrentDayWeather(newCity) {
   $("#weather-card-container").append(currentWeatherCard);
 }
 
-function saveFriend() {
+// saving city name to local storage and ensuring user inputs data we want to work with
+function saveCity() {
   let city = $("#input-search").val();
   if (!city) {
     alert("Please enter a city");
@@ -75,13 +75,13 @@ function saveFriend() {
   localStorage.setItem("cities", JSON.stringify(savedCities));
   displayCities(city);
 }
-
+// using local storage to display a history of past searches
 function displayCities() {
-  var savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+  let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
   $("#city-list").empty();
-
+  // creating the button and when clicked re-calling the function stack
   for (const city of savedCities) {
-    var btnHTML = $(`
+    let btnHTML = $(`
     <button class="m-3 d-flex btn btn-secondary d-block mx-auto" 
     onclick="cityCord('${city}')">${city}</button>
     `);
@@ -90,8 +90,7 @@ function displayCities() {
   }
 }
 
-
-// Find the coordinates of the city I've searched
+// Find the coordinates of the city I've searched and use the longitude and latitude to create a new url based on the city
 function cityCord(city) {
   let queryURL =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
@@ -103,13 +102,14 @@ function cityCord(city) {
       return response.json();
     })
     .then(function (result) {
+      // grabing longitude and latitude
       let lon = result.coord.lon;
       let lat = result.coord.lat;
       let newURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=37d5a1d043d687cb9e9c0189aad1636a`;
       weatherData(newURL);
     });
 }
-
+// getting the five day forecast data
 function weatherData(newURL) {
   fetch(newURL)
     .then(function (response) {
@@ -118,34 +118,34 @@ function weatherData(newURL) {
     .then(function (result) {
       const weatherArray = result.list;
       let currentDay = 0;
+      // emptying the html
+      console.log(result);
       $("#weather-card-container").empty();
       $("#display-card").empty();
       for (let i = 0; i < weatherArray.length; i++) {
         // slice the dt_txt property so we only have the 12th character which will leave us with all the times at noon
         if (weatherArray[i].dt_txt.slice(11, 13) == "12") {
-          
+          // creating a new variable with all the data we want
           let newCity = {
             CityName: inputElement.value.toUpperCase(),
             temp: (weatherArray[i].main.temp - 273.15).toFixed(1),
             wind: weatherArray[i].wind.speed.toFixed(1),
             humidity: weatherArray[i].main.humidity,
+            icon: weatherArray[i].weather.icon,
+            
             fiveDay: days[currentDay++],
             // const iconID = weatherData.current.weather[0]['icon'];
             //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
           };
-          if(currentDay === 1) {
+          console.log(newCity.icon);
+          iconURL = "http://openweathermap.org/img/w/" + newCity.icon + ".png"
+          // making sure we only call displayForecast for the first array of data we receive
+          if (currentDay === 1) {
             displayForecast(newCity);
           }
-          console.log(newCity);
-
-          // localStorage.setItem("newCity", JSON.stringify(newCity));
-          // recentSearchesData.push(newCity);
-          // localStorage.setItem("recentSearches", JSON.stringify(recentSearchesData));
-          // recentSearches.push(newCity);
-          // $("#display-card").empty();
+          // displaying five cards using for loop
           displayCurrentDayWeather(newCity);
         }
-          
       }
     });
 }
