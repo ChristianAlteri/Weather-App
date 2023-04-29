@@ -21,9 +21,10 @@ function citySearch(event) {
 }
 
 function displayForecast(newCity) {
+  
   const card = $(
     // template literal for current day weather displayed
-    `<div class="row">
+    `<div class="row mx-auto">
                         <div class="col-12">
                             <div class="card mr-3">
                                 <div class="card-body">
@@ -43,9 +44,10 @@ function displayForecast(newCity) {
 }
 
 function displayCurrentDayWeather(newCity) {
+  
   const currentWeatherCard = $(
     // template literal for weather card
-    `<div class="row mx-auto justify-content-center card">
+    `<div class="row mx-auto justify-content-center text-center card">
         <div class="card-body mx-auto">
         <h6 class="forecast-day-date">${newCity.fiveDay}</h6>
         <div class="card-text mx-auto">
@@ -71,7 +73,7 @@ function saveFriend() {
   }
   savedCities.push(city);
   localStorage.setItem("cities", JSON.stringify(savedCities));
-  displayCities();
+  displayCities(city);
 }
 
 function displayCities() {
@@ -116,6 +118,8 @@ function weatherData(newURL) {
     .then(function (result) {
       const weatherArray = result.list;
       let currentDay = 0;
+      $("#weather-card-container").empty();
+      $("#display-card").empty();
       for (let i = 0; i < weatherArray.length; i++) {
         // slice the dt_txt property so we only have the 12th character which will leave us with all the times at noon
         if (weatherArray[i].dt_txt.slice(11, 13) == "12") {
