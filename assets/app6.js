@@ -92,6 +92,7 @@ function displayCities() {
 
 // Find the coordinates of the city I've searched and use the longitude and latitude to create a new url based on the city
 function cityCord(city) {
+  event.preventDefault();
   let queryURL =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
     city +
@@ -102,7 +103,7 @@ function cityCord(city) {
       return response.json();
     })
     .then(function (result) {
-      // grabing longitude and latitude
+      // grabbing longitude and latitude
       let lon = result.coord.lon;
       let lat = result.coord.lat;
       let newURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=37d5a1d043d687cb9e9c0189aad1636a`;
