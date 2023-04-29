@@ -50,6 +50,7 @@ function displayCurrentDayWeather(newCity) {
         <div class="card-body mx-auto">
         <h6 class="forecast-day-date">${newCity.fiveDay}</h6>
         <div class="card-text mx-auto">
+        <img src="http://openweathermap.org/img/w/${newCity.icon}.png">
             <p>Temp: <span id="forecast-day-temp"></span>${newCity.temp}&#xb0; </p>
             <p>Wind: <span id="forecast-day-wind"></span>${newCity.wind}km/h </p>
             <p>Humidity: <span id="forecast-day-humidity"></span>${newCity.humidity}% </p>
@@ -132,7 +133,7 @@ function weatherData(newURL) {
             temp: (weatherArray[i].main.temp - 273.15).toFixed(1),
             wind: weatherArray[i].wind.speed.toFixed(1),
             humidity: weatherArray[i].main.humidity,
-            icon: weatherArray[i].weather.icon,
+            icon: weatherArray[i].weather[0].icon,
             
             fiveDay: days[currentDay++],
             // const iconID = weatherData.current.weather[0]['icon'];
