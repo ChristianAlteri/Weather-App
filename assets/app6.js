@@ -50,7 +50,7 @@ function displayCurrentDayWeather(newCity) {
         <div class="card-body mx-auto">
         <h6 class="forecast-day-date">${newCity.fiveDay}</h6>
         <div class="card-text mx-auto">
-        <img src="http://openweathermap.org/img/w/${newCity.icon}.png">
+        <img src="https://openweathermap.org/img/w/${newCity.icon}.png">
             <p>Temp: <span id="forecast-day-temp"></span>${newCity.temp}&#xb0; </p>
             <p>Wind: <span id="forecast-day-wind"></span>${newCity.wind}km/h </p>
             <p>Humidity: <span id="forecast-day-humidity"></span>${newCity.humidity}% </p>
@@ -140,7 +140,7 @@ function weatherData(newURL) {
             //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
           };
           console.log(newCity.icon);
-          iconURL = "http://openweathermap.org/img/w/" + newCity.icon + ".png"
+          iconURL = "https://openweathermap.org/img/w/" + newCity.icon + ".png"
           // making sure we only call displayForecast for the first array of data we receive
           if (currentDay === 1) {
             displayForecast(newCity);
