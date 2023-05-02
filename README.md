@@ -9,7 +9,7 @@ Using this five day forecast app a user can input a city and find the five day f
 ###
 Written by Christian Alteri
 
-To learn more about my project, [click here](http://www.example.com).
+To learn more about my project, [click here](https://christianalteri.github.io/Weather-App/).
 
 
 ####

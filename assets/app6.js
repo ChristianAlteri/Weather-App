@@ -136,10 +136,9 @@ function weatherData(newURL) {
             icon: weatherArray[i].weather[0].icon,
             
             fiveDay: days[currentDay++],
-            // const iconID = weatherData.current.weather[0]['icon'];
-            //         const iconURL = "http://openweathermap.org/img/w/" + iconID + ".png";
+            
           };
-          console.log(newCity.icon);
+          console.log(newCity);
           iconURL = "https://openweathermap.org/img/w/" + newCity.icon + ".png"
           // making sure we only call displayForecast for the first array of data we receive
           if (currentDay === 1) {
